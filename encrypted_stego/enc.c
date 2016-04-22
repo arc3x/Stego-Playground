@@ -76,7 +76,7 @@ int main(int argc, char* argv[]) {
     unsigned char* password;
     
     //variable defs
-    unsigned char* key = malloc(101);
+    unsigned char* key = malloc(1001);
    
     //get args into their places
     for(int i=0; i<argc; i++) {
@@ -129,7 +129,7 @@ int main(int argc, char* argv[]) {
     /* Load config file, and other important initialisation */
     OPENSSL_config(NULL);
     //produce a hash from the password to use as a key
-    PKCS5_PBKDF2_HMAC_SHA1(password, strlen(password), "", 0, 10000, 100, key);
+    PKCS5_PBKDF2_HMAC_SHA1(password, strlen(password), "", 0, 10000, 1000, key);
     
     //encrypt in GCM mode
     unsigned char aad[] = {

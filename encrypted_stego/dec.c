@@ -86,7 +86,7 @@ int main(int argc, char* argv[]) {
     unsigned char* plain;
     unsigned char* plainfile;
     unsigned char* password;
-    unsigned char* key = malloc(101);
+    unsigned char* key = malloc(1001);
    
     //get args into their places
     for(int i=0; i<argc; i++) {
@@ -134,13 +134,13 @@ int main(int argc, char* argv[]) {
     
     //code from https://wiki.openssl.org/index.php/Libcrypto_API
     /* Load the human readable error strings for libcrypto */
-    ERR_load_crypto_strings();
+    //ERR_load_crypto_strings();
     /* Load all digest and cipher algorithms */
-    OpenSSL_add_all_algorithms();
+    //OpenSSL_add_all_algorithms();
     /* Load config file, and other important initialisation */
-    OPENSSL_config(NULL);
+    //OPENSSL_config(NULL);
     //produce a hash from the password to use as a key
-    PKCS5_PBKDF2_HMAC_SHA1(password, strlen(password), "", 0, 10000, 100, key);
+    PKCS5_PBKDF2_HMAC_SHA1(password, strlen(password), "", 0, 10000, 1000, key);
     //printf("key: %s\n", key);
     
     //encrypt in GCM mode
@@ -152,16 +152,17 @@ int main(int argc, char* argv[]) {
         0x99, 0xaa, 0x3e, 0x68, 0xed, 0x81, 0x73, 0xa0, 0xee, 0xd0, 0x66, 0x84
     };
     unsigned char tag[] = "";       
-    int plain_len = decrypt(cipher, strlen(cipher), aad, 0, tag, key, iv, plain);
-    //printf("plain: %s\n", plain);
+    int plain_len = decrypt(cipher, cipher_len, aad, sizeof(aad), tag, key, iv, plain);
+    printf("plain: %s\n", plain);
+    printf("plain_len: %i\n", plain_len);
     
     /* Clean up */
     /* Removes all digests and ciphers */
-    EVP_cleanup();
+    //EVP_cleanup();
     /* if you omit the next, a small leak may be left when you make use of the BIO (low level API) for e.g. base64 transformations */
-    CRYPTO_cleanup_all_ex_data();
+    //CRYPTO_cleanup_all_ex_data();
     /* Remove error strings */
-    ERR_free_strings();
+    //ERR_free_strings();
     
     FILE* fp = fopen(plainfile, "w");
     //check proper opening
