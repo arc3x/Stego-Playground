@@ -121,10 +121,12 @@ unsigned char* embedChar(unsigned char* ptr, unsigned char c) {
 
 //embeds the stego message in the ppm image
 void embedStego(unsigned char* ppm, unsigned char* message, int message_len) {
+    printf("embedding: %s\n", message);
     char* ptr = advanceToEmbeddingArea(ppm);
     ptr = embedInt(ptr, message_len);
     for (int i=0; i<message_len; i++) {
         ptr = embedChar(ptr, message[i]);
+        printf("char embedded: %c\n",message[i]);
     }
     
 }
@@ -149,6 +151,7 @@ unsigned char* extractInt(unsigned char* ptr, int* i) {
         while(*ptr!=' ' && *ptr!='\n') {
             ptr+=sizeof(char);
         }
+
         ptr+=sizeof(char);
         if (*ptr=='\n')
             ptr+=sizeof(char);
@@ -157,25 +160,27 @@ unsigned char* extractInt(unsigned char* ptr, int* i) {
 }
 
 //extracts a char from a cover work and returns a new ptr 
-unsigned char* extractChar(unsigned char* ptr, char* c) {    
-    *c=' ';
+unsigned char* extractChar(unsigned char* ptr, unsigned char* c) {    
+    *c=0;
     for (int k=(sizeof(char)*8)-1; k>=0; k--) {
-        //printf("k: %i\t",k);
+        printf("k: %i\t",k);
         //get bit from stego
-        int toExtract = atoi(ptr);
-        //printf("extracting from: %i\t", toExtract);       
-        int bit = toExtract & 0x01;        
-        //printf("extracting bit: %i\t", bit);
+        unsigned int toExtract = atoi(ptr);
+        printf("extracting from: %i\t", toExtract);       
+        unsigned int bit = toExtract & 0x01;        
+        printf("extracting bit: %i\t", bit);
+        
         //put bit in char
         bit = bit << k;
         *c |= bit;
-        //printf("c: %c\n",*c);
+        printf("c: %d\n",*c);
                 
         //advance to next 
         while(*ptr!=' ' && *ptr!='\n') {
             ptr+=sizeof(char);
         }
-        ptr+=sizeof(char);
+        if (*ptr==' ')
+            ptr+=sizeof(char);
         if (*ptr=='\n')
             ptr+=sizeof(char);
     }
@@ -183,17 +188,19 @@ unsigned char* extractChar(unsigned char* ptr, char* c) {
 }
 
 //extracts the stego message in the ppm image
-unsigned char* extractStego(unsigned char* ppm, unsigned char* plain) {
-    char* ptr = advanceToEmbeddingArea(ppm);
+unsigned char* extractStego(unsigned char* ppm, unsigned char* plain, int* len) {
+    unsigned char* ptr = advanceToEmbeddingArea(ppm);
     int message_len;
-    plain = malloc(message_len);
+    *len=message_len;
+    plain = malloc(message_len+1);
     ptr = extractInt(ptr, &message_len);
     //printf("message len: %i\n", message_len);
-    for (int i=0; i<message_len; i++) {
+    int i;
+    for (i=0; i<message_len; i++) {
         unsigned char c;
         ptr = extractChar(ptr, &c);
         plain[i]=c;
-        //printf("char recovered: %c\n",c);
+        printf("char recovered: %c\n",c);
     }    
     return plain;
 }

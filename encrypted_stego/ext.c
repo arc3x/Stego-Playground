@@ -56,7 +56,8 @@ int main(int argc, char* argv[]) {
 
     
     //embed the message in the cover
-    plain = extractStego(stego, plain);
+    int len=0;
+    plain = extractStego(stego, plain, &len);
     
     printf("plain: %s\n", plain);
     

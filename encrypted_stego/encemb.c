@@ -42,18 +42,19 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    //encrypt message->enc(message)
+
     char cmd[256];
-    
+    //encrypt
     strcpy(cmd, "./enc -i "); strcat(cmd, message); strcat(cmd, " -o crypto.txt -p "); strcat(cmd, password);       
     printf("%s\n", cmd);
     system(cmd);
-    
+    //embed
     strcpy(cmd, "./emb -c "); strcat(cmd, cover); strcat(cmd, " -m crypto.txt -s "); strcat(cmd, stego);       
     printf("%s\n", cmd);
     system(cmd);
-        
+    //cleanup
     system("rm crypto.txt");    
+    
     return 0;
 }
 
