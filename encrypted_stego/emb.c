@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
+#include "sppm.h"
 
 int main(int argc, char* argv[]) {
     //check proper usage
@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
     }
     
     //argument containers (& other var decl)
-    int cipher_len;
+    int message_len;
     unsigned char* message;
     unsigned char* cover;
     unsigned char* stegofile;
@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
             long file_size;
             fseek(fp, 0, SEEK_END);
             file_size = ftell(fp);
-            cipher_len = file_size;
+            message_len = file_size;
             rewind(fp);
             //allocate buffer
             cover = malloc(file_size+1);            
@@ -51,7 +51,7 @@ int main(int argc, char* argv[]) {
             long file_size;
             fseek(fp, 0, SEEK_END);
             file_size = ftell(fp);
-            cipher_len = file_size;
+            message_len = file_size;
             rewind(fp);
             //allocate buffer
             message = malloc(file_size+1);            
@@ -69,11 +69,22 @@ int main(int argc, char* argv[]) {
     }
 
     //dump args for debug
-    printf("argc: %i\n", argc);    
-    printf("-c %s", cover);
-    printf("-m %s\n", message);
-    printf("-s %s\n", stegofile);
+    //printf("argc: %i\n", argc);    
+    //printf("-c %s", cover);
+    //printf("-m %s\n", message);
+    //printf("-s %s\n", stegofile);
+    int payload_size = getMaxPayloadSize(cover);
+    printf("max payload: %i bytes\n", payload_size);
+    printf("size of ciphertext: %i bytes\n", message_len);
     
+    //if message is bigger than payload fail
+    if (message_len > payload_size) {
+        printf("error: message exceeds max payload size. try a bigger image.\n");
+        exit(0);
+    }
+    
+    //embed the message in the cover
+    embedStego(cover, message, message_len);
     
     
     FILE* fp = fopen(stegofile, "w");
