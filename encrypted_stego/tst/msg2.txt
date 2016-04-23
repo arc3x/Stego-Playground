@@ -1,0 +1,7 @@
+secret message:
+	Target Designation:	NX-01
+	Target Status:		UNKNOWN
+
+--SIGNATURE--
+3pxfgyherterw
+--SIGNATURE--
