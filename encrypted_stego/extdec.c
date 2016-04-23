@@ -33,7 +33,6 @@ int main(int argc, char* argv[]) {
             strcpy(password, argv[i+1]);
         }
     }
-
     
     char cmd[256];
     //extract

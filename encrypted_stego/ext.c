@@ -14,8 +14,7 @@ int main(int argc, char* argv[]) {
     int stego_len;
     unsigned char* stego;
     unsigned char* plain;
-    unsigned char* messagefile;    
-    
+    unsigned char* messagefile;        
     
     //get args into their places
     for(int i=0; i<argc; i++) {
@@ -48,18 +47,10 @@ int main(int argc, char* argv[]) {
             strcpy(messagefile, argv[i+1]);
         }
     }
-
-    //dump args for debug
-    printf("argc: %i\n", argc);    
-    //printf("-s %s\n", stego);
-    printf("-m %s\n", messagefile);
-
     
     //embed the message in the cover
     int len=0;
     plain = extractStego(stego, plain, &len);
-    
-    printf("plain: %s\n", plain);
     
     FILE* fp = fopen(messagefile, "w");
     //check proper opening

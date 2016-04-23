@@ -68,14 +68,7 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    //dump args for debug
-    //printf("argc: %i\n", argc);    
-    //printf("-c %s", cover);
-    //printf("-m %s\n", message);
-    //printf("-s %s\n", stegofile);
     int payload_size = getMaxPayloadSize(cover);
-    printf("max payload: %i bytes\n", payload_size);
-    printf("size of ciphertext: %i bytes\n", message_len);
     
     //if message is bigger than payload fail
     if (message_len > payload_size) {
@@ -86,7 +79,7 @@ int main(int argc, char* argv[]) {
     //embed the message in the cover
     embedStego(cover, message, message_len);
     
-    
+    //save stegowork
     FILE* fp = fopen(stegofile, "w");
     //check proper opening
     if (fp == NULL) {
