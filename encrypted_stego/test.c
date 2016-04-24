@@ -62,28 +62,33 @@ int main() {
     r = system("diff tst/msg2.txt tst/msg2.plain2");
     (!r) ? printf("pass\n\n") : printf("fail\n\n");
     
-    /*
-    //extract
-    strcpy(cmd, "./ext -s "); strcat(cmd, stego); strcat(cmd, " -m "); strcat(cmd, "crypto.txt");       
+    //test encemb/extdec self undo        
+    strcpy(cmd, "./encemb -c covers/logo.ppm -m tst/msg0.txt -s tst/msg0.ppm -p fish");
     printf("%s\n", cmd);
     system(cmd);
+    strcpy(cmd, "./extdec -s tst/msg0.ppm -m tst/msg0.plain3 -p fish"); 
+    printf("%s\n", cmd);
+    system(cmd);
+    r = system("diff tst/msg0.txt tst/msg0.plain3");
+    (!r) ? printf("pass\n\n") : printf("fail\n\n");
     
-    strcpy(cmd, "./dec -i crypto.txt -o "); strcat(cmd, message); strcat(cmd, " -p "); strcat(cmd, password);       
+    strcpy(cmd, "./encemb -c covers/logo.ppm -m tst/msg1.txt -s tst/msg1.ppm -p fish");
     printf("%s\n", cmd);
     system(cmd);
-        
-    //encrypt
-    strcpy(cmd, "./enc -i "); strcat(cmd, message); strcat(cmd, " -o crypto.txt -p "); strcat(cmd, password);       
+    strcpy(cmd, "./extdec -s tst/msg1.ppm -m tst/msg1.plain3 -p fish"); 
     printf("%s\n", cmd);
     system(cmd);
-    //embed
-    strcpy(cmd, "./emb -c "); strcat(cmd, cover); strcat(cmd, " -m crypto.txt -s "); strcat(cmd, stego);       
+    r = system("diff tst/msg1.txt tst/msg1.plain3");
+    (!r) ? printf("pass\n\n") : printf("fail\n\n");
+    
+    strcpy(cmd, "./encemb -c covers/logo.ppm -m tst/msg2.txt -s tst/msg2.ppm -p fish");
     printf("%s\n", cmd);
     system(cmd);
-    //cleanup
-    system("rm crypto.txt");         
-        
-    system("rm crypto.txt");    
-    */
+    strcpy(cmd, "./extdec -s tst/msg2.ppm -m tst/msg2.plain3 -p fish"); 
+    printf("%s\n", cmd);
+    system(cmd);
+    r = system("diff tst/msg2.txt tst/msg2.plain3");
+    (!r) ? printf("pass\n\n") : printf("fail\n\n");
+           
     return 0;
 }
