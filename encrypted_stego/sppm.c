@@ -166,12 +166,11 @@ unsigned char* extractChar(unsigned char* ptr, unsigned char* c) {
 }
 
 //extracts the stego message in the ppm image
-unsigned char* extractStego(unsigned char* ppm, unsigned char* plain, int* len) {
+unsigned char* extractStego(unsigned char* ppm, unsigned char* plain) {
     unsigned char* ptr = advanceToEmbeddingArea(ppm);
     int message_len;
-    *len=message_len;
-    plain = malloc(message_len+1);
     ptr = extractInt(ptr, &message_len);
+    plain = malloc((message_len+1)*sizeof(char));
     //printf("message len: %i\n", message_len);
     int i;
     for (i=0; i<message_len; i++) {

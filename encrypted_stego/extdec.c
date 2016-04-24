@@ -37,11 +37,11 @@ int main(int argc, char* argv[]) {
     char cmd[256];
     //extract
     strcpy(cmd, "./ext -s "); strcat(cmd, stego); strcat(cmd, " -m "); strcat(cmd, "crypto.txt");       
-    printf("%s\n", cmd);
+    //printf("%s\n", cmd);
     system(cmd);
     
     strcpy(cmd, "./dec -i crypto.txt -o "); strcat(cmd, message); strcat(cmd, " -p "); strcat(cmd, password);       
-    printf("%s\n", cmd);
+    //printf("%s\n", cmd);
     system(cmd);
         
     system("rm crypto.txt");    

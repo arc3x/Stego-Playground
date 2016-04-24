@@ -49,8 +49,7 @@ int main(int argc, char* argv[]) {
     }
     
     //embed the message in the cover
-    int len=0;
-    plain = extractStego(stego, plain, &len);
+    plain = extractStego(stego, plain);
     
     FILE* fp = fopen(messagefile, "w");
     //check proper opening

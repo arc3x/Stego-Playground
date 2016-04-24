@@ -145,7 +145,7 @@ int main(int argc, char* argv[]) {
         return 0;
     }
     //write plaintext file
-    fwrite(plain, 1, strlen(plain)-3, fp);
+    fwrite(plain, 1, strlen(plain), fp);
     //close file
     fclose(fp);      
     
