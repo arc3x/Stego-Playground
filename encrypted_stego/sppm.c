@@ -4,6 +4,7 @@
 #include "sppm.h"
 
 //advances ptr to the beginning of embedding area
+//returns new ptr
 unsigned char* advanceToEmbeddingArea(unsigned char* ptr) {
     for(int i=0; i<4; i++) {
         while(*ptr != '\n') {
@@ -14,6 +15,7 @@ unsigned char* advanceToEmbeddingArea(unsigned char* ptr) {
     return ptr;
 }
 
+//returns the width in pixels of the image
 int getWidth(unsigned char* ptr) {
     for(int i=0; i<2; i++) {
         while(*ptr != '\n') {
@@ -24,6 +26,7 @@ int getWidth(unsigned char* ptr) {
     return atoi(ptr);
 }
 
+//returns the height in pixels of the image
 int getHeight(unsigned char* ptr) {
     for(int i=0; i<2; i++) {
         while(*ptr != '\n') {
@@ -37,6 +40,7 @@ int getHeight(unsigned char* ptr) {
     return atoi(ptr);
 }
 
+//input: ptr to beginning of file (in memory)
 //returns max payload size in bytes
 int getMaxPayloadSize(unsigned char* ppm) {
     char* ptr = ppm;    
@@ -45,6 +49,7 @@ int getMaxPayloadSize(unsigned char* ppm) {
     return ((w*h*3)/8)-4;
 }
 
+//input: ptr to beginning of file (in memory)
 //embeds an int in a cover work and returns a new ptr 
 unsigned char* embedInt(unsigned char* ptr, int i) {    
     for (int k=(sizeof(int)*8)-1; k>=0; k--) {

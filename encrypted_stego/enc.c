@@ -128,7 +128,7 @@ int main(int argc, char* argv[]) {
     FILE* fp = fopen(cipherfile, "w");
     //check proper opening
     if (fp == NULL) {
-        printf("error opening input file\n");
+        printf("error opening output file\n");
         return 0;
     }
     //write ciphertext file
