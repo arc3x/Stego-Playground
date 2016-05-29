@@ -12,6 +12,11 @@ int main(int argc, char ** argv) {
         printf("usage: %s <filename> <n>\n", argv[0]);
         return 0;
     }
+	
+	if (atoi(argv[2]) < 1) {
+		printf("error: n must be > 0\n");
+		return 0;
+	}
     
     //argument containers (& other var decl)
     int run_len;    
