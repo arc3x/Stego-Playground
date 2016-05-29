@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include <dirent.h>
-#include "../encrypted_stego/sppm.h"
 
 #define DEBUG 0
 
