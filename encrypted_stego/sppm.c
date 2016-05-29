@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "sppm.h"
 
 //advances ptr to the beginning of embedding area
@@ -15,9 +16,31 @@ unsigned char* advanceToEmbeddingArea(unsigned char* ptr) {
     return ptr;
 }
 
+//advances ptr to the next data chunk
+//returns new ptr
+unsigned char* advanceToNextChunk(unsigned char* ptr) {   //NOT DEBUGGED
+    //printf("from %c\t",*ptr); 
+    while(!isdigit(*ptr)) {
+        ptr+=sizeof(char);
+    }
+    return ptr;
+}
+
+
 //returns the width in pixels of the image
 int getWidth(unsigned char* ptr) {
     for(int i=0; i<2; i++) {
+        while(*ptr != '\n') {			
+            ptr+=sizeof(char);
+        }	
+        ptr+=sizeof(char);
+    }
+    return atoi(ptr);
+}
+
+//returns the width in pixels of the image
+int getWidthFix(unsigned char* ptr) {
+    for(int i=0; i<1; i++) {
         while(*ptr != '\n') {
             ptr+=sizeof(char);
         }
@@ -26,9 +49,10 @@ int getWidth(unsigned char* ptr) {
     return atoi(ptr);
 }
 
+
 //returns the height in pixels of the image
 int getHeight(unsigned char* ptr) {
-    for(int i=0; i<2; i++) {
+    for(int i=0; i<1; i++) {
         while(*ptr != '\n') {
             ptr+=sizeof(char);
         }
@@ -39,6 +63,21 @@ int getHeight(unsigned char* ptr) {
     }
     return atoi(ptr);
 }
+
+//returns the height in pixels of the image
+int getHeightFix(unsigned char* ptr) {
+    for(int i=0; i<1; i++) {
+        while(*ptr != '\n') {
+            ptr+=sizeof(char);
+        }
+        ptr+=sizeof(char);
+    }
+    while(*ptr != ' ') {
+        ptr+=sizeof(char);
+    }
+    return atoi(ptr);
+}
+
 
 //input: ptr to beginning of file (in memory)
 //returns max payload size in bytes
