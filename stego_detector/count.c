@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
-#include "../encrypted_stego/sppm.h"
+#include "sppm.h"
 
 #define DEBUG 0
 
@@ -74,13 +74,18 @@ int main(int argc, char ** argv) {
     ptr = advanceToEmbeddingArea(ptr);    
 	(!DEBUG)?: printf("pixels: %d\timg_size: %d\n", pixels, ((int)strlen(img)));
     //read through all pixels
-    while(count < pixels) {                    
+    while(count <= pixels) {                    
         //fill buckets with counts
         //which bucket? (builder)
         int b = 0;
         for (int i=run_len-1; i>=0; i--) {  
-            //advance ptr to last 'digit'
-            ptr+=2;        
+            if (count+i>pixels){
+                break;
+            }
+            //advance ptr to last 'digit'            
+            while(*(ptr+1)!=' ' && *(ptr+1)!='\n') {                
+                ptr+=1;
+            }            
             //get bit 
             (!DEBUG)?: printf("extracting from: [%c|%d]\t", *ptr, *ptr);
             int bit = *ptr & 0x1;
@@ -89,18 +94,19 @@ int main(int argc, char ** argv) {
             bit <<= i;
             (!DEBUG)?: printf("bit shifted(%d): %d\t", i, bit);
             b |= bit;
-            (!DEBUG)?: printf("b: %d\tcount: %d/%d\n", b, count, pixels);            
-            
-            //save in bucket
-			runs[b]++;
-            
-            //advance ptr to next chunk
-			if (count<pixels) {
-				ptr = advanceToNextChunk(ptr);
-			}
+            (!DEBUG)?: printf("b: %d\tcount: %d/%d\n", b, count, pixels);                                    
             
             count++; //count of 'pixels' we have processed
-        }        
+            
+            //advance ptr to next chunk
+			if (count<=pixels) {
+				ptr = advanceToNextChunk(ptr);
+			}
+                        
+        }
+        
+        //save in bucket
+        runs[b]++;                
     }    
     
 	for (int i=0; i<bucket_c; i++) {
