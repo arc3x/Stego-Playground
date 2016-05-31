@@ -6,10 +6,10 @@
 #include "chisqr.h"
 #include "gamma.h"
 
-#define DEBUG 1
+#define DEBUG 0
 
 int main(int argc, char ** argv) {
-        //check proper usage
+    //check proper usage
     if (argc != 4) {
         printf("usage: %s <image filename> <n> <model filename>\n", argv[0]);
         return 0;
@@ -162,7 +162,16 @@ int main(int argc, char ** argv) {
     //delete test.model
     system("rm test.model");    
         
+        
+        
+        
+        
+        
     //compute chi sq test
+    
+    
+    /*
+    //OPTION 1
     int dof = run_len-1;
     float xsqr = 0;
     unsigned int total = 0;
@@ -170,13 +179,14 @@ int main(int argc, char ** argv) {
     for (int i=0; i<run_len; i++) {
         total += test_runs[i];
     }   
-    //compute chisqr
+    //compute chisqr        
     for (int i=0; i<run_len; i++) {
         xsqr += pow(((float)test_runs[i])-(model_runs[i]*(float)total),2)/(model_runs[i]*(float)total);
     }   
     printf("xsqr: %f\ttotal: %d\n", xsqr, total);   
+    */
     
-    /*
+    ///*
     //OPTION 2
     //http://www.codeproject.com/Articles/432194/How-to-Calculate-the-Chi-Squared-P-Value
     //public domain
@@ -192,10 +202,16 @@ int main(int argc, char ** argv) {
         XSqr = (float)Observed[I] - (Expected[I]*total);
         CriticalValue += ((XSqr * XSqr) / (Expected[I]*total));
     }            
-    printf("XSqr: %f\tCV: %f\ttotal: %d\n", XSqr, CriticalValue, total);    
+    (!DEBUG)?: printf("XSqr: %f\tCV: %f\ttotal: %d\n", XSqr, CriticalValue, total);    
     double p = chisqr(total-1,CriticalValue);   
-    printf("p: %f\n", p);
-    */
+    (!DEBUG)?: printf("p: %f\n", p);
+    //*/
+    
+    if (p >= 0.95) {
+        printf("SAME\n");
+    } else {
+        printf("DIFFERENT\n");
+    }
     
     return 0;
 }
