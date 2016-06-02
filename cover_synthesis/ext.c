@@ -52,11 +52,11 @@ int main(int argc, char ** argv)
     }
     
     //get message len
-    int message_len = wav[0];
+    int message_len = ((unsigned int)wav[0] << 16) | (unsigned int)wav[1];
     message = malloc(message_len+1);
     
     //extract message
-    for (int i=1; i<=message_len; i++) {
+    for (int i=2; i<=message_len+1; i++) {
         //get stego sample
         int b = wav[i];
         //temp for char construction
@@ -73,12 +73,12 @@ int main(int argc, char ** argv)
                 c &= ~mask;
             }
         }
-        message[i-1] = c;    
+        message[i-2] = c;    
         //printf("%d\t[%c|%d]\n",b,c,c);
     }
  
     //write message to file   
-    FILE* fp = fopen(output_file_name, "w");
+    FILE* fp = fopen(output_file_name, "wb");
     //check proper opening
     if (fp == NULL) {
         printf("error opening output file\n");
